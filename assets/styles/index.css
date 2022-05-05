@@ -3,7 +3,7 @@ body{
     max-width:1280px;
     margin:auto;
 }
-/*
+
 .main{
     background-color: beige;
 }
@@ -18,7 +18,14 @@ body{
 .text_area{
     width: 100%;
 height: 150px;
-border: 1px solid green
+border: 1px solid green;
+margin-bottom: 30px;
+border: none;
+outline: none;
+font-size: 26px;
+background-color: #f7f7f7;
+padding-left: 10px;
+transition: .2s;
 }
 
 .div_wrapper_buttons{
@@ -60,7 +67,31 @@ border: 1px solid green
     max-width: 500px;
 }
 
-.button__active::after{
+
+
+.active {
+    background-color: #333;
+    color: #fff;
+}
+
+.remove {
+    animation: keys_animation 0.5s forwards ;
+}
+
+@keyframes keys_animation {
+    0% {
+        background-color: #333;
+        color: #fff;
+    }
+    100% {
+        background-color: #fff;
+        color: #000;
+    }
+}
+
+
+
+/* .button__active::after{
 content: '';
 top: 10px;
 right: 10px;
@@ -75,13 +106,19 @@ border-radius: 50%;
 .button__active_click::after{
     background: #08ff08;
 
-}
+} */
 
-.button__black{
+/* .button__black{
     background: rgba(0, 0, 0, 0.25)
 } */
 
 
+
+
+
+
+
+/*
 .keyboard {
     position: fixed;
     left: 0;
@@ -153,4 +190,4 @@ border-radius: 50%;
 
 .keyboard__key--dark {
     background: rgba(0, 0, 0, 0.25);
-}
+} */
