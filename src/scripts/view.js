@@ -4,6 +4,12 @@ function createDiv(container, className) {
   container.append(div);
   return div;
 }
+function createNewLine(container, className) {
+  const div = document.createElement('div');
+  div.classList.add(className);
+  container.append(div);
+  return div;
+}
 
 function createButton(letter, container, className, typeButton) {
   const button = document.createElement('button');

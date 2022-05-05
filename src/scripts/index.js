@@ -4,7 +4,7 @@ import '../../assets/styles/index.css';
 
 const { createDiv, createButton, createTextArea, createIcon } = helpers;
 
-const keyLayout = [
+const keyLayoutEnglish = [
     "`", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "delete",
     "tab", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "[", "]", "/",
     "caps", "a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "'", "enter",
@@ -14,7 +14,7 @@ const keyLayoutRussian = [
     "`", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "delete",
     "tab", "й", "ц", "у", "к", "е", "н", "г", "ш", "щ", "з", "х", "ъ", "/",
     "caps", "ф", "ы", "в", "а", "п", "р", "о", "л", "д", "ж", "э", "enter",
-    "shift", "я", "ч", "с", "м", "и", "т", "ь", "б", "ю", "/", "▲", "shift",
+    "shift", "я", "ч", "с", "м", "и", "т", "ь", "б", "ю", ".", "▲", "shift",
     "fn", "cont", "opt", "com", "space", "com", "opt", "◄", "▼", "►"];
 
 const bodyElem = document.querySelector('body');
@@ -26,36 +26,60 @@ let textArea = createTextArea(divContForTextArea, 'text_area');
 
 let divContForButtons = createDiv(bodyElem, 'div_wrapper_buttons');
 // console.log(divContForButtons);
-
+let language = "eng";
+let isCapsLock = false;
 const butClass = ['button'];
 const butClassWide = ['button', 'button__wide'];
 const butClassWideExtra = ['button', 'button__wide', 'button__wide_extra'];
 const butClassWideActive = ['button', 'button__wide', 'button__active'];
 const butClassBack = ['button', 'button__wide', 'button__black'];
 
-render(keyLayout);
+render(keyLayoutEnglish);
 
 function render(keyLayout) {
+    divContForButtons.innerHTML = '';
+    if (keyLayout === keyLayoutEnglish) {
+        language = "eng";
+    }
+    else {
+        language = "rus";
+    }
     for (let i = 0; i < keyLayout.length; i++) {
         let buttonCr = (createButton(keyLayout[i], divContForButtons, butClass, 'button'));
-        if (keyLayout[i] === "delete" || keyLayout[i] === "tab" || keyLayout[i] === "caps" || keyLayout[i] === "enter" || keyLayout[i] === "shift") {
+        if (keyLayout[i].toLowerCase() === "tab" || keyLayout[i].toLowerCase() === "shift" || keyLayout[i].toLowerCase() === "com" || keyLayout[i].toLowerCase() === "caps") {
             buttonCr.classList.add('button__wide');
+            buttonCr.innerText = keyLayout[i].toLowerCase();
         }
-        else if (keyLayout[i] === "space") {
+        else if (keyLayout[i].toLowerCase() === "cont" || keyLayout[i].toLowerCase() === "opt") {
+            buttonCr.innerText = keyLayout[i].toLowerCase();
+        }
+        else if (keyLayout[i].toLowerCase() === "space") {
             buttonCr.classList.add('button__wide_extra');
+            buttonCr.innerText = '';
         }
-        else if (keyLayout[i] === "fn") {
+        else if (keyLayout[i].toLowerCase() === "fn") {
             buttonCr.classList.add('fn');
+            buttonCr.innerText = 'fn';
+            let shiftRight = (buttonCr.previousElementSibling);
+            let brEl = document.createElement('br');
+            shiftRight.after(brEl)
         }
-        switch (keyLayout[i]) {
+
+        switch (keyLayout[i].toLowerCase()) {
             case "delete":
                 buttonCr.classList.add('button__wide');
-
-                buttonCr.addEventListener("click", () => {
-                   console.log('delete')
-                });
+                buttonCr.innerText = 'delete';
+                divContForButtons.appendChild(document.createElement('br'));
                 break;
-                default:
+            case "/":
+                divContForButtons.appendChild(document.createElement('br'));
+                break;
+            case "enter":
+                buttonCr.classList.add('button__wide');
+                buttonCr.innerText = 'enter';
+                divContForButtons.appendChild(document.createElement('br'));
+                break;
+            default:
                 break;
         }
     }
@@ -72,55 +96,116 @@ let text_input = document.querySelector('.text');
 let keyboard_wrapp = document.querySelector('.keyboard_wrapp');
 
 
-for(let i = 0; i < keys.length; i++) {
+for (let i = 0; i < keys.length; i++) {
     keys[i].setAttribute('keyname', keys[i].innerText);
     keys[i].setAttribute('lowerCaseName', keys[i].innerText.toLowerCase());
 }
 
-window.addEventListener('keydown', function(e) {
+window.addEventListener('keydown', function (e) {
     console.log(e);
-    for(let i = 0; i < keys.length; i++) {
-        if(e.key == keys[i].getAttribute('keyname') || e.key == keys[i].getAttribute('lowerCaseName')) {
+    for (let i = 0; i < keys.length; i++) {
+        if (e.key == keys[i].getAttribute('keyname') || e.key == keys[i].getAttribute('lowerCaseName')) {
             keys[i].classList.add('active')
         }
-        if(e.code == 'Space') {
+        if (e.code == 'Space') {
             spaceKey.classList.add('active')
         }
-        if(e.code == 'ShiftLeft') {
+        if (e.code == 'ShiftLeft') {
             shift_right.classList.remove('active')
         }
-        if(e.code == 'ShiftRight') {
+        if (e.code == 'ShiftRight') {
             shift_left.classList.remove('active')
         }
-        if(e.code == 'CapsLock') {
+        if (e.code == 'CapsLock') {
             caps_lock_key.classList.toggle('active');
         }
     }
 
 })
 
-window.addEventListener('keyup', function(e) {
-    for(let i = 0; i < keys.length; i++) {
-        if(e.key == keys[i].getAttribute('keyname' ) || e.key == keys[i].getAttribute('lowerCaseName')) {
+window.addEventListener('keyup', function (e) {
+    for (let i = 0; i < keys.length; i++) {
+        if (e.key == keys[i].getAttribute('keyname') || e.key == keys[i].getAttribute('lowerCaseName')) {
             keys[i].classList.remove('active')
             keys[i].classList.add('remove')
         }
-        if(e.code == 'Space') {
+        if (e.code == 'Space') {
             spaceKey.classList.remove('active');
             spaceKey.classList.add('remove');
         }
-        if(e.code == 'ShiftLeft') {
+        if (e.code == 'ShiftLeft') {
             shift_right.classList.remove('active')
             shift_right.classList.remove('remove')
         }
-        if(e.code == 'ShiftRight') {
+        if (e.code == 'ShiftRight') {
             shift_left.classList.remove('active')
             shift_left.classList.remove('remove')
         }
-        setTimeout(()=> {
+        setTimeout(() => {
             keys[i].classList.remove('remove')
-        },200)
+        }, 200)
     }
+})
+
+let textAreaArray = [];
+window.addEventListener('click', (e) => {
+    console.log(e.target.innerText.toLowerCase());
+    console.log(e.target.type)
+    if (e.target.type === 'button') {
+        if (e.target.innerText.toLowerCase() === 'delete') {
+            textAreaArray.pop();
+        }
+        else if (e.target.innerText.toLowerCase() === 'caps') {
+            isCapsLock = !isCapsLock;
+            if (language === 'eng'){
+                if (isCapsLock) {
+                    console.log('eng')
+                    let arrayUpper = [];
+                    keyLayoutEnglish.forEach(element => {
+                        arrayUpper.push(element.toUpperCase())
+                    });
+                    render(arrayUpper);
+                    language = 'eng';
+                }
+                else{
+                    render(keyLayoutEnglish)
+                }
+            }
+            else if(language === 'rus'){
+                if (isCapsLock) {
+                    console.log('rus')
+                    let arrayUpper = [];
+                    keyLayoutRussian.forEach(element => {
+                        arrayUpper.push(element.toUpperCase())
+                    });
+                    render(arrayUpper);
+                    language = 'rus';
+                }
+                else{
+                    render(keyLayoutRussian)
+                }
+            }
+        }
+
+        else if (e.target.innerText.toLowerCase() === 'tab') {
+            for (let i = 0; i < 4; i++) {
+                textAreaArray.push(' ');
+            }
+        }
+        else if (e.target.innerText.toLowerCase() === 'enter') {
+                textAreaArray.push(`\r\n`);
+
+        }
+        else {
+            textAreaArray.push(e.target.innerText);
+        }
+        let elements = '';
+        textAreaArray.forEach(element => {
+            elements += element;
+        });
+        textArea.textContent = elements;
+    }
+
 })
 
 // let buttonCr = (createButton('i', divContForButtons, butClass, 'button'));
