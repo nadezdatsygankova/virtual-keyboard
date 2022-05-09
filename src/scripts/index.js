@@ -38,12 +38,21 @@ let keys = document.querySelectorAll('.button');
 let spaceKey = document.querySelector('.space');
 let deleteButton = document.querySelector('.delete');
 let capsButton = document.querySelector('.caps');
-// console.log(capsButton);
+
 let shift = document.querySelectorAll('.shift');
 let shiftLeft = shift[0];
 let shiftRight = shift[1];
-// let shift_right = document.querySelector('.shift_right');
-let caps_lock_key = document.querySelector('.caps_lock_key');
+let controlButton = document.querySelector('.cont');
+let opt = document.querySelectorAll('.opt');
+let optLeft = opt[0];
+let optRight = opt[1];
+let com = document.querySelectorAll('.com');
+let comLeft = com[0];
+let comRight = com[1];
+let arrowUp = document.querySelector(".arrowUp");
+let arrowLeft = document.querySelector(".arrowLeft");
+let arrowDown = document.querySelector(".arrowDown");
+let arrowRight = document.querySelector(".arrowRight");
 
 function render(keyLayout) {
     divContForButtons.innerHTML = '';
@@ -63,6 +72,7 @@ function render(keyLayout) {
         }
         else if (keyLayout[i].toLowerCase() === "cont" || keyLayout[i].toLowerCase() === "opt") {
             buttonCr.innerText = keyLayout[i].toLowerCase();
+            buttonCr.classList.add(keyLayout[i].toLowerCase());
         }
         else if (keyLayout[i].toLowerCase() === "space") {
             buttonCr.classList.add('button__wide_extra', 'space');
@@ -93,7 +103,18 @@ function render(keyLayout) {
             case "caps":
                 buttonCr.classList.add('button__wide', 'caps');
                 buttonCr.innerText = 'caps';
-
+                break;
+            case "▲":
+                buttonCr.classList.add('arrowUp');
+                break;
+            case "◄":
+                buttonCr.classList.add('arrowLeft');
+                break;
+            case "▼":
+                buttonCr.classList.add('arrowDown');
+                break;
+            case "►":
+                buttonCr.classList.add('arrowRight');
                 break;
             default:
                 break;
@@ -117,7 +138,7 @@ window.addEventListener('keydown', function (e) {
     for (let i = 0; i < keys.length; i++) {
         if (e.key == keys[i].getAttribute('keyname') || e.key == keys[i].getAttribute('lowerCaseName')) {
             keys[i].classList.add('active')
-         }
+        }
         if (e.code == 'Space') {
             spaceKey.classList.add('active')
         }
@@ -127,19 +148,48 @@ window.addEventListener('keydown', function (e) {
         else if (e.code == 'ShiftRight') {
             shiftLeft.classList.remove('active')
         }
+        else if (e.code == 'AltLeft') {
+            optLeft.classList.add('active')
+        }
+        else if (e.code == 'AltRight') {
+            optRight.classList.add('active')
+        }
+        else if (e.code == 'MetaLeft') {
+            comLeft.classList.add('active')
+        }
+        else if (e.code == 'MetaRight') {
+            comRight.classList.add('active')
+        }
+        else if (e.code == 'ArrowUp') {
+            arrowUp.classList.add('active')
+        }
+        else if (e.code == 'ArrowDown') {
+            arrowDown.classList.add('active')
+        }
+        else if (e.code == 'ArrowLeft') {
+            arrowLeft.classList.add('active')
+        }
+        else if (e.code == 'ArrowRight') {
+            arrowRight.classList.add('active')
+        }
 
-        else if (e.code == 'Backspace') {
+        else if (e.code === 'Backspace') {
             deleteButton.classList.add('active')
         }
 
-        if (e.code == 'CapsLock') {
-            console.log('caps')
+        if (e.code === 'CapsLock') {
+
             capsButton.classList.add('active');
             // workCapsLock();
         }
+        if (e.code === 'ControlLeft') {
+            controlButton.classList.add('active');
+        }
         setTimeout(() => {
-            capsButton.classList.remove('active')
-        }, 2000)
+            capsButton.classList.remove('active');
+            // optRight.classList.remove('active');
+            // optLeft.classList.remove('active');
+        }, 1000)
 
 
 
@@ -158,17 +208,53 @@ window.addEventListener('keyup', function (e) {
             spaceKey.classList.remove('active');
             spaceKey.classList.add('remove');
         }
-         if (e.code === 'ShiftLeft') {
+        if (e.code === 'ShiftLeft') {
             shiftRight.classList.remove('active')
             shiftRight.classList.remove('remove')
         }
-         if (e.code === 'ShiftRight') {
+        if (e.code === 'ShiftRight') {
             shiftLeft.classList.remove('active')
             shiftLeft.classList.remove('remove')
         }
-         if (e.code == 'Backspace') {
+        if (e.code === 'AltLeft') {
+            optLeft.classList.remove('active')
+            optLeft.classList.remove('remove')
+        }
+        if (e.code === 'AltRight') {
+            optRight.classList.remove('active')
+            optRight.classList.remove('remove')
+        }
+        if (e.code === 'MetaLeft') {
+            comLeft.classList.remove('active')
+            comLeft.classList.remove('remove')
+        }
+        if (e.code === 'MetaRight') {
+            comRight.classList.remove('active')
+            comRight.classList.remove('remove')
+        }
+        if (e.code == 'Backspace') {
             deleteButton.classList.remove('active');
             deleteButton.classList.add('remove')
+        }
+        if (e.code === 'ControlLeft') {
+            controlButton.classList.remove('active');
+            controlButton.classList.add('remove')
+        }
+        if (e.code == 'ArrowUp') {
+            arrowUp.classList.remove('active')
+            arrowUp.classList.add('remove')
+        }
+        if (e.code == 'ArrowDown') {
+            arrowDown.classList.remove('active')
+            arrowDown.classList.add('remove')
+        }
+        if (e.code == 'ArrowLeft') {
+            arrowLeft.classList.remove('active')
+            arrowLeft.classList.add('remove')
+        }
+        if (e.code == 'ArrowRight') {
+            arrowRight.classList.add('active')
+            arrowRight.classList.add('remove')
         }
         setTimeout(() => {
             keys[i].classList.remove('remove')
@@ -308,37 +394,37 @@ window.addEventListener('click', (e) => {
 
 
 
-function workCapsLock (){
+function workCapsLock() {
     isCapsLock = !isCapsLock;
-            if (language === 'eng') {
-                if (isCapsLock) {
-                    let arrayUpper = [];
-                    keyLayoutEnglish.forEach(element => {
-                        arrayUpper.push(element.toUpperCase())
-                    });
-                    render(arrayUpper);
-                    language = 'eng';
+    if (language === 'eng') {
+        if (isCapsLock) {
+            let arrayUpper = [];
+            keyLayoutEnglish.forEach(element => {
+                arrayUpper.push(element.toUpperCase())
+            });
+            render(arrayUpper);
+            language = 'eng';
 
-                }
-                else {
-                    render(keyLayoutEnglish)
-                }
-            }
-            else if (language === 'rus') {
-                if (isCapsLock) {
-                    console.log('rus')
-                    let arrayUpper = [];
-                    keyLayoutRussian.forEach(element => {
-                        arrayUpper.push(element.toUpperCase())
-                    });
-                    render(arrayUpper);
-                    language = 'rus';
+        }
+        else {
+            render(keyLayoutEnglish)
+        }
+    }
+    else if (language === 'rus') {
+        if (isCapsLock) {
+            console.log('rus')
+            let arrayUpper = [];
+            keyLayoutRussian.forEach(element => {
+                arrayUpper.push(element.toUpperCase())
+            });
+            render(arrayUpper);
+            language = 'rus';
 
-                }
-                else {
-                    render(keyLayoutRussian)
-                }
-            }
+        }
+        else {
+            render(keyLayoutRussian)
+        }
+    }
 }
 
 // let buttonCr = (createButton('i', divContForButtons, butClass, 'button'));
