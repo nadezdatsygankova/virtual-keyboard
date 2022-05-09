@@ -7,7 +7,7 @@ function createDiv(container, className) {
 
 function createButton(letter, container, className, typeButton) {
   const button = document.createElement('button');
-  for (let i = 0; i < className.length; i++) {
+  for (let i = 0; i < className.length; i += 1) {
     button.classList.add(className[i]);
   }
   button.textContent = letter;
@@ -29,10 +29,9 @@ function createParagraph(container, className) {
   return par;
 }
 
-
 export default {
   createDiv,
   createButton,
   createTextArea,
-  createParagraph
+  createParagraph,
 };
