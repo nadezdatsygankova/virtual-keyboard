@@ -355,7 +355,6 @@ window.addEventListener('click', (e) => {
             }
         }
         else if (e.target.innerText.toLowerCase() === '') {
-            // console.log('space')
             textAreaArray.push(' ');
         }
         else if (e.target.innerText.toLowerCase() === 'enter') {
@@ -363,7 +362,6 @@ window.addEventListener('click', (e) => {
 
         }
         else if (e.target.innerText.toLowerCase() === 'cont' || e.target.innerText.toLowerCase() === 'com'|| e.target.innerText.toLowerCase() === 'opt') {
-            // console.log('space')
             textAreaArray.push('');
         }
         else {
