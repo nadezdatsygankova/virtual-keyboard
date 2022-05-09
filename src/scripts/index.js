@@ -6,9 +6,9 @@ const { createDiv, createButton, createTextArea, createIcon } = helpers;
 
 const keyLayoutEnglish = [
     "`", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "delete",
-    "tab", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "[", "]", "/",
+    "tab", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "[", "]", "\\",
     "caps", "a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "'", "enter",
-    "shift", "z", "x", "c", "v", "b", "n", "m", ",", ".", "?", "▲", "shift",
+    "shift", "z", "x", "c", "v", "b", "n", "m", ",", ".", "/", "▲", "shift",
     "fn", "cont", "opt", "com", "space", "com", "opt", "◄", "▼", "►"];
 const keyLayoutRussian = [
     "`", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "delete",
@@ -18,6 +18,7 @@ const keyLayoutRussian = [
     "fn", "cont", "opt", "com", "space", "com", "opt", "◄", "▼", "►"];
 
 const bodyElem = document.querySelector('body');
+let textAreaArray = [];
 
 let divContForTextArea = createDiv(bodyElem, 'div_textArea_wrapper');
 // console.log(divContForTextArea);
@@ -28,13 +29,21 @@ let divContForButtons = createDiv(bodyElem, 'div_wrapper_buttons');
 // console.log(divContForButtons);
 let language = "eng";
 let isCapsLock = false;
+let isShift = false;
 const butClass = ['button'];
-const butClassWide = ['button', 'button__wide'];
-const butClassWideExtra = ['button', 'button__wide', 'button__wide_extra'];
-const butClassWideActive = ['button', 'button__wide', 'button__active'];
-const butClassBack = ['button', 'button__wide', 'button__black'];
-
+//render first layout
 render(keyLayoutEnglish);
+
+let keys = document.querySelectorAll('.button');
+let spaceKey = document.querySelector('.space');
+let deleteButton = document.querySelector('.delete');
+let capsButton = document.querySelector('.caps');
+// console.log(capsButton);
+let shift = document.querySelectorAll('.shift');
+let shiftLeft = shift[0];
+let shiftRight = shift[1];
+// let shift_right = document.querySelector('.shift_right');
+let caps_lock_key = document.querySelector('.caps_lock_key');
 
 function render(keyLayout) {
     divContForButtons.innerHTML = '';
@@ -48,13 +57,15 @@ function render(keyLayout) {
         let buttonCr = (createButton(keyLayout[i], divContForButtons, butClass, 'button'));
         if (keyLayout[i].toLowerCase() === "tab" || keyLayout[i].toLowerCase() === "shift" || keyLayout[i].toLowerCase() === "com" || keyLayout[i].toLowerCase() === "caps") {
             buttonCr.classList.add('button__wide');
+            let classListName = keyLayout[i].toLowerCase();
+            buttonCr.classList.add(classListName);
             buttonCr.innerText = keyLayout[i].toLowerCase();
         }
         else if (keyLayout[i].toLowerCase() === "cont" || keyLayout[i].toLowerCase() === "opt") {
             buttonCr.innerText = keyLayout[i].toLowerCase();
         }
         else if (keyLayout[i].toLowerCase() === "space") {
-            buttonCr.classList.add('button__wide_extra');
+            buttonCr.classList.add('button__wide_extra', 'space');
             buttonCr.innerText = '';
         }
         else if (keyLayout[i].toLowerCase() === "fn") {
@@ -67,17 +78,22 @@ function render(keyLayout) {
 
         switch (keyLayout[i].toLowerCase()) {
             case "delete":
-                buttonCr.classList.add('button__wide');
+                buttonCr.classList.add('button__wide', 'delete');
                 buttonCr.innerText = 'delete';
                 divContForButtons.appendChild(document.createElement('br'));
                 break;
-            case "/":
+            case "\\":
                 divContForButtons.appendChild(document.createElement('br'));
                 break;
             case "enter":
-                buttonCr.classList.add('button__wide');
+                buttonCr.classList.add('button__wide', 'enter');
                 buttonCr.innerText = 'enter';
                 divContForButtons.appendChild(document.createElement('br'));
+                break;
+            case "caps":
+                buttonCr.classList.add('button__wide', 'caps');
+                buttonCr.innerText = 'caps';
+
                 break;
             default:
                 break;
@@ -86,14 +102,8 @@ function render(keyLayout) {
 
 }
 
-let keys = document.querySelectorAll('.button');
-let spaceKey = document.querySelector('.space_key');
-let shift_left = document.querySelector('.shift_left');
-let shift_right = document.querySelector('.shift_right');
-let caps_lock_key = document.querySelector('.caps_lock_key');
-let body = document.querySelector('body');
-let text_input = document.querySelector('.text');
-let keyboard_wrapp = document.querySelector('.keyboard_wrapp');
+
+
 
 
 for (let i = 0; i < keys.length; i++) {
@@ -102,30 +112,45 @@ for (let i = 0; i < keys.length; i++) {
 }
 
 window.addEventListener('keydown', function (e) {
-    console.log(e);
+
+    console.log(e.code);
     for (let i = 0; i < keys.length; i++) {
         if (e.key == keys[i].getAttribute('keyname') || e.key == keys[i].getAttribute('lowerCaseName')) {
             keys[i].classList.add('active')
-        }
+         }
         if (e.code == 'Space') {
             spaceKey.classList.add('active')
         }
-        if (e.code == 'ShiftLeft') {
-            shift_right.classList.remove('active')
+        else if (e.code == 'ShiftLeft') {
+            shiftRight.classList.remove('active')
         }
-        if (e.code == 'ShiftRight') {
-            shift_left.classList.remove('active')
+        else if (e.code == 'ShiftRight') {
+            shiftLeft.classList.remove('active')
         }
+
+        else if (e.code == 'Backspace') {
+            deleteButton.classList.add('active')
+        }
+
         if (e.code == 'CapsLock') {
-            caps_lock_key.classList.toggle('active');
+            console.log('caps')
+            capsButton.classList.add('active');
+            // workCapsLock();
         }
+        setTimeout(() => {
+            capsButton.classList.remove('active')
+        }, 2000)
+
+
+
     }
+
 
 })
 
 window.addEventListener('keyup', function (e) {
     for (let i = 0; i < keys.length; i++) {
-        if (e.key == keys[i].getAttribute('keyname') || e.key == keys[i].getAttribute('lowerCaseName')) {
+        if (e.key.toLowerCase() == keys[i].getAttribute('keyname') || e.key == keys[i].getAttribute('lowerCaseName')) {
             keys[i].classList.remove('active')
             keys[i].classList.add('remove')
         }
@@ -133,33 +158,48 @@ window.addEventListener('keyup', function (e) {
             spaceKey.classList.remove('active');
             spaceKey.classList.add('remove');
         }
-        if (e.code == 'ShiftLeft') {
-            shift_right.classList.remove('active')
-            shift_right.classList.remove('remove')
+         if (e.code === 'ShiftLeft') {
+            shiftRight.classList.remove('active')
+            shiftRight.classList.remove('remove')
         }
-        if (e.code == 'ShiftRight') {
-            shift_left.classList.remove('active')
-            shift_left.classList.remove('remove')
+         if (e.code === 'ShiftRight') {
+            shiftLeft.classList.remove('active')
+            shiftLeft.classList.remove('remove')
+        }
+         if (e.code == 'Backspace') {
+            deleteButton.classList.remove('active');
+            deleteButton.classList.add('remove')
         }
         setTimeout(() => {
             keys[i].classList.remove('remove')
         }, 200)
     }
+    console.log(e.code)
+
 })
 
-let textAreaArray = [];
+
 window.addEventListener('click', (e) => {
-    console.log(e.target.innerText.toLowerCase());
-    console.log(e.target.type)
+    //  console.log(e);
     if (e.target.type === 'button') {
         if (e.target.innerText.toLowerCase() === 'delete') {
             textAreaArray.pop();
+            deleteButton.classList.add('active');
+            setTimeout(() => {
+                deleteButton.classList.remove('active');
+            }, 300)
+
         }
         else if (e.target.innerText.toLowerCase() === 'caps') {
+            //  console.log(capsButton)
+            //  capsButton.classList.add('active');
+            // setTimeout(() => {
+            //     capsButton.classList.remove('active');
+            // }, 300);
+
             isCapsLock = !isCapsLock;
-            if (language === 'eng'){
+            if (language === 'eng') {
                 if (isCapsLock) {
-                    console.log('eng')
                     let arrayUpper = [];
                     keyLayoutEnglish.forEach(element => {
                         arrayUpper.push(element.toUpperCase())
@@ -167,11 +207,11 @@ window.addEventListener('click', (e) => {
                     render(arrayUpper);
                     language = 'eng';
                 }
-                else{
+                else {
                     render(keyLayoutEnglish)
                 }
             }
-            else if(language === 'rus'){
+            else if (language === 'rus') {
                 if (isCapsLock) {
                     console.log('rus')
                     let arrayUpper = [];
@@ -181,23 +221,78 @@ window.addEventListener('click', (e) => {
                     render(arrayUpper);
                     language = 'rus';
                 }
-                else{
+                else {
                     render(keyLayoutRussian)
                 }
             }
         }
+        else if (e.target.innerText.toLowerCase() === 'shift') {
 
+
+
+            isShift = !isShift;
+            if (language === 'eng') {
+                if (isShift) {
+                    console.log('eng')
+                    let arrayUpper = [];
+                    keyLayoutEnglish.forEach(element => {
+                        arrayUpper.push(element.toUpperCase())
+                    });
+                    render(arrayUpper);
+                    language = 'eng';
+                    isShift = true;
+                }
+                else {
+                    render(keyLayoutEnglish)
+                    isShift = false;
+                }
+            }
+            else if (language === 'rus') {
+                if (isShift) {
+                    console.log('rus')
+                    let arrayUpper = [];
+                    keyLayoutRussian.forEach(element => {
+                        arrayUpper.push(element.toUpperCase())
+                    });
+                    render(arrayUpper);
+                    language = 'rus';
+                    isShift = !isShift;
+                }
+                else {
+                    render(keyLayoutRussian)
+                    isShift = !isShift;
+                }
+            }
+            shift[0].classList.add('active');
+
+        }
+        else if (e.target.innerText.toLowerCase() === 'fn') {
+            console.log(language)
+            if (language === 'eng') {
+                render(keyLayoutRussian);
+                language = 'rus'
+            }
+            else {
+                render(keyLayoutEnglish);
+            }
+        }
         else if (e.target.innerText.toLowerCase() === 'tab') {
             for (let i = 0; i < 4; i++) {
                 textAreaArray.push(' ');
             }
         }
+        else if (e.target.innerText.toLowerCase() === '') {
+            // console.log('space')
+            textAreaArray.push(' ');
+
+        }
         else if (e.target.innerText.toLowerCase() === 'enter') {
-                textAreaArray.push(`\r\n`);
+            textAreaArray.push(`\r\n`);
 
         }
         else {
             textAreaArray.push(e.target.innerText);
+
         }
         let elements = '';
         textAreaArray.forEach(element => {
@@ -206,7 +301,45 @@ window.addEventListener('click', (e) => {
         textArea.textContent = elements;
     }
 
+
+
+
 })
+
+
+
+function workCapsLock (){
+    isCapsLock = !isCapsLock;
+            if (language === 'eng') {
+                if (isCapsLock) {
+                    let arrayUpper = [];
+                    keyLayoutEnglish.forEach(element => {
+                        arrayUpper.push(element.toUpperCase())
+                    });
+                    render(arrayUpper);
+                    language = 'eng';
+
+                }
+                else {
+                    render(keyLayoutEnglish)
+                }
+            }
+            else if (language === 'rus') {
+                if (isCapsLock) {
+                    console.log('rus')
+                    let arrayUpper = [];
+                    keyLayoutRussian.forEach(element => {
+                        arrayUpper.push(element.toUpperCase())
+                    });
+                    render(arrayUpper);
+                    language = 'rus';
+
+                }
+                else {
+                    render(keyLayoutRussian)
+                }
+            }
+}
 
 // let buttonCr = (createButton('i', divContForButtons, butClass, 'button'));
 
