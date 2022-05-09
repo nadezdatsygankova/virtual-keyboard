@@ -30,8 +30,7 @@ transition: .2s;
 
 .div_wrapper_buttons{
     width: 100%;
-    border: 1px solid rebeccapurple;
-    height: 400px;
+    height: 300px;
     background-color: lightskyblue;
     text-align: center;
 }
@@ -89,7 +88,15 @@ transition: .2s;
     }
 }
 
-
+.div_information{
+    width: 100%;
+    height: 50px;
+    background-color: lightskyblue;
+    text-align: center;
+}
+.information{
+    margin: 0;
+}
 
 /* .button__active::after{
 content: '';

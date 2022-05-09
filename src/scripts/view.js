@@ -4,12 +4,6 @@ function createDiv(container, className) {
   container.append(div);
   return div;
 }
-function createNewLine(container, className) {
-  const div = document.createElement('div');
-  div.classList.add(className);
-  container.append(div);
-  return div;
-}
 
 function createButton(letter, container, className, typeButton) {
   const button = document.createElement('button');
@@ -28,18 +22,17 @@ function createTextArea(container, className) {
   container.append(textarea);
   return textarea;
 }
-
-function createIcon(text, container, className) {
-  const icon = document.createElement('i');
-  icon.classList = className;
-  icon.textContent = text;
-  container.append(icon);
-  return icon;
+function createParagraph(container, className) {
+  const par = document.createElement('p');
+  par.classList = className;
+  container.append(par);
+  return par;
 }
+
 
 export default {
   createDiv,
   createButton,
   createTextArea,
-  createIcon,
+  createParagraph
 };

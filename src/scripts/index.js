@@ -2,7 +2,7 @@ import helpers from './view';
 import '../../assets/styles/index.css';
 // import backgroundImg from '../assets/img/background.jpg';
 
-const { createDiv, createButton, createTextArea, createIcon } = helpers;
+const { createDiv, createButton, createTextArea,createParagraph } = helpers;
 
 const keyLayoutEnglish = [
     "`", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "delete",
@@ -12,7 +12,7 @@ const keyLayoutEnglish = [
     "fn", "cont", "opt", "com", "space", "com", "opt", "◄", "▼", "►"];
 const keyLayoutRussian = [
     "`", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "delete",
-    "tab", "й", "ц", "у", "к", "е", "н", "г", "ш", "щ", "з", "х", "ъ", "/",
+    "tab", "й", "ц", "у", "к", "е", "н", "г", "ш", "щ", "з", "х", "ъ", "\\",
     "caps", "ф", "ы", "в", "а", "п", "р", "о", "л", "д", "ж", "э", "enter",
     "shift", "я", "ч", "с", "м", "и", "т", "ь", "б", "ю", ".", "▲", "shift",
     "fn", "cont", "opt", "com", "space", "com", "opt", "◄", "▼", "►"];
@@ -21,12 +21,13 @@ const bodyElem = document.querySelector('body');
 let textAreaArray = [];
 
 let divContForTextArea = createDiv(bodyElem, 'div_textArea_wrapper');
-// console.log(divContForTextArea);
 
 let textArea = createTextArea(divContForTextArea, 'text_area');
 
 let divContForButtons = createDiv(bodyElem, 'div_wrapper_buttons');
-// console.log(divContForButtons);
+let divContInformation = createDiv(bodyElem, 'div_information');
+let par = createParagraph(divContInformation,'information')
+par.innerHTML ='Operation system Mac.<br> Switching a language -> Click mouse button <strong>fn</strong>'
 let language = "eng";
 let isCapsLock = false;
 let isShift = false;
@@ -187,15 +188,8 @@ window.addEventListener('keydown', function (e) {
         }
         setTimeout(() => {
             capsButton.classList.remove('active');
-            // optRight.classList.remove('active');
-            // optLeft.classList.remove('active');
         }, 1000)
-
-
-
     }
-
-
 })
 
 window.addEventListener('keyup', function (e) {
@@ -253,7 +247,7 @@ window.addEventListener('keyup', function (e) {
             arrowLeft.classList.add('remove')
         }
         if (e.code == 'ArrowRight') {
-            arrowRight.classList.add('active')
+            arrowRight.classList.remove('active')
             arrowRight.classList.add('remove')
         }
         setTimeout(() => {
@@ -277,11 +271,6 @@ window.addEventListener('click', (e) => {
 
         }
         else if (e.target.innerText.toLowerCase() === 'caps') {
-            //  console.log(capsButton)
-            //  capsButton.classList.add('active');
-            // setTimeout(() => {
-            //     capsButton.classList.remove('active');
-            // }, 300);
 
             isCapsLock = !isCapsLock;
             if (language === 'eng') {
@@ -313,8 +302,6 @@ window.addEventListener('click', (e) => {
             }
         }
         else if (e.target.innerText.toLowerCase() === 'shift') {
-
-
 
             isShift = !isShift;
             if (language === 'eng') {
@@ -370,15 +357,17 @@ window.addEventListener('click', (e) => {
         else if (e.target.innerText.toLowerCase() === '') {
             // console.log('space')
             textAreaArray.push(' ');
-
         }
         else if (e.target.innerText.toLowerCase() === 'enter') {
             textAreaArray.push(`\r\n`);
 
         }
+        else if (e.target.innerText.toLowerCase() === 'cont' || e.target.innerText.toLowerCase() === 'com'|| e.target.innerText.toLowerCase() === 'opt') {
+            // console.log('space')
+            textAreaArray.push('');
+        }
         else {
             textAreaArray.push(e.target.innerText);
-
         }
         let elements = '';
         textAreaArray.forEach(element => {
